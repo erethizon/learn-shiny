@@ -1,0 +1,84 @@
+---
+title: "Learning Shiny"
+author: "Erika"
+date: "4/14/2020"
+output: html_document
+---
+
+## Using this to learn to make a shiny app to create a north country covid-19 dashboard...
+
+Prep the workspace:
+```{r}
+rm(list = ls())
+library(shiny)
+```
+Now run an example
+```{r}
+#runExample("01_hello")
+```
+Every shiny app is contained in its own directory. In this case, I made a new folder called "covid" which contains the required `app.R` file.
+
+As requested in [the tutorial](https://shiny.rstudio.com/tutorial/written-tutorial/lesson1/), I copied and pasted the code for the `hello shiny` app into my app.R inside my covid folder.
+
+To run the app:
+```{r}
+#runApp("learn")
+```
+And to run the app and show the code alongside of it:
+```{r}
+#runApp("learn", display.mode = 'showcase')
+```
+Now let's run some of the other built in examples to see different features of shiny apps:
+```{r}
+# runExample("01_hello")      # a histogram
+# runExample("02_text")       # tables and data frames
+# runExample("03_reactivity") # a reactive expression
+# runExample("04_mpg")        # global variables
+# runExample("05_sliders")    # slider bars
+# runExample("06_tabsets")    # tabbed panels
+# runExample("07_widgets")    # help text and submit buttons
+# runExample("08_html")       # Shiny app built from HTML
+# runExample("09_upload")     # file upload wizard
+# runExample("10_download")   # file download wizard
+# runExample("11_timer")      # an automated timer
+```
+Some helpful websites referenced along the way in the RStudio Shiny tutorial.
+
+### From lesson 2
+* The [Shiny Application Layout Guide](https://shiny.rstudio.com/articles/layout-guide.html) has tips for advanced layout formatting options including using fluidRow and column to build a layout from a grid.
+* The [Shiny HTML Tags Glossary](https://shiny.rstudio.com/articles/tag-glossary.html) and the page [Customize your UI with HTML](https://shiny.rstudio.com/articles/html-tags.html) have information about styling your shiny app with HTML tags, adding images, etc.
+
+### From lesson 3
+Widgets are blocks of code that create tools, such as sliders, radio buttons, etc.  Widgets are added within `sidebarPanel`s and `mainPanel`s in the `ui` object.
+
+For ideas and code, visit the [Shiny widgets gallery](https://shiny.rstudio.com/gallery/widget-gallery.html).
+
+### From lesson 5
+The data for this lesson are available [here](https://shiny.rstudio.com/tutorial/written-tutorial/lesson5/census-app/data/counties.rds)
+
+The helper script `helpers.R`is available [here](https://shiny.rstudio.com/tutorial/written-tutorial/lesson5/census-app/helpers.R)
+
+You also need to install the `maps` and `mapproj` packages to the project and turn them on before the app will run.
+
+A key element of this lesson is where to put different features of your app, such as calls to data sets, R scripts, etc.  Where you put them will impact the performance of your app.
+
+So, some key take-aways:
+
+* The `shinyApp` function is run once, when the app is first run
+* The `server` function is run once **each time** a user visits your app.
+* The R expressions inside of the different `render*` functions (e.g. `renderPlot`, `renderText`), are run many times, each time a user changes an input value for a widget.
+
+**Therefore:**
+
+1. Source scripts, load libraries, and read data sets at the beginning of app.R *outside of* the `server` function. Shiny will only run this code once.
+
+2. Define user specific objects inside the `server` function, but outside any `render*` calls.These would be objects you think each user will need their own copy of, for example, an object that records the users session information.  This code is run once per user.
+
+3. Only place code that Shiny *must* rerun to build an object inside of a `render*` function. 
+
+4. You should generally avoid putting code inside a `render*` function that does not need to go there. Doing so will slow down the whole app.
+
+
+
+
+
